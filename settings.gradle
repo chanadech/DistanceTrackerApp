@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    plugins{
+        id 'androidx.navigation'
+        id 'org.jetbrains.kotlin.android' version '1.8.0'
+        id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
+    }
+
+    resolutionStrategy {
+
+        eachPlugin {
+
+            if (requested.id.id == 'androidx.navigation') {
+                useModule("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.0")
+            }
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "DistanceTrackerApp"
+include ':app'
