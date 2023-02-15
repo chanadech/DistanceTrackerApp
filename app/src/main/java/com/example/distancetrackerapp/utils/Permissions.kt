@@ -1,9 +1,9 @@
-package com.example.distancetrackerapp
+package com.example.distancetrackerapp.utils
 
 import android.Manifest
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.example.distancetrackerapp.Constants.PERMISSIONS_LOCATION_REQUEST_CODE
+import com.example.distancetrackerapp.utils.Constants.PERMISSIONS_LOCATION_REQUEST_CODE
 import pub.devrel.easypermissions.EasyPermissions
 
 // USE EasyPrmissions library -> help when working with runtime permissions

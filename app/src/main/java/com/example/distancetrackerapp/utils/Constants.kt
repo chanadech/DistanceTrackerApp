@@ -1,4 +1,4 @@
-package com.example.distancetrackerapp
+package com.example.distancetrackerapp.utils
 
 object Constants {
 

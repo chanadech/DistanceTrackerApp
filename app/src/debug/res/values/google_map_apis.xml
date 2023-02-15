@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    SHA1 CERTIFICATE DEBUG FINGERPRINT: ใช้ได้อีกนาน
+            09:12:FE:0C:AF:5F:B5:87:45:92:CC:A3:99:5C:87:63:5B:18:D2:A7
+            SHA-256: 8C:4C:A6:F1:D0:7F:B1:79:AF:9F:75:AB:8E:6D:65:35:DE:7E:3D:97:C5:3D:68:76:4D:DC:4B:B8:0C:D6:54:3E
+
+            -->
+
+    <!--   APIKEY:AIzaSyBR5BPe4tahCGc71N605gGwJovHKTn6bqA-->
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBR5BPe4tahCGc71N605gGwJovHKTn6bqA</string>
+
+</resources>
+
+
+    <!--dev ใข้อันนี้-->

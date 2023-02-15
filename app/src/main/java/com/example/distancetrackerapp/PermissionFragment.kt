@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.distancetrackerapp.databinding.FragmentPermissionBinding
+import com.example.distancetrackerapp.utils.Permissions
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class PermissionFragment : Fragment(),EasyPermissions.PermissionCallbacks { // เรียก PermissionCallbacks เพื่อ override permission denied, permission granted
+class PermissionFragment : Fragment(),EasyPermissions.PermissionCallbacks {         // use PermissionCallbacks to override permission denied, permission granted
 
     private var _binding: FragmentPermissionBinding?= null
     private val binding get() = _binding!!
@@ -57,8 +58,9 @@ class PermissionFragment : Fragment(),EasyPermissions.PermissionCallbacks { // �
 
     }
 
-    override fun onDestroyOptionsMenu() {
-        super.onDestroyOptionsMenu()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
+
     }
 }
