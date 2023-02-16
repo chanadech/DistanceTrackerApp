@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_mapsFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_mapsFragment_to_mapsFragmentWithTools"
+            app:destination="@id/mapsFragmentWithTools" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -34,4 +37,8 @@
             android:id="@+id/action_resultFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragmentWithTools"
+        android:name="com.example.distancetrackerapp.MapsFragmentWithTools"
+        android:label="MapsFragmentWithTools" />
 </navigation>

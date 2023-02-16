@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/mission_tab_unselected"
+        android:visible="false"
+        tools:ignore="MenuTitle" />
+
+    <item
+        android:id="@+id/mission_tab_field"
+        android:title="@string/tmp_field_title"
+        android:icon="@drawable/ic_soil_moisture_field_filled_24dp" />
+
+    <item
+        android:id="@+id/mission_tab_mission"
+        android:title="@string/tmp_mission_title"
+        android:icon="@drawable/ic_strategy_filled_24dp" />
+
+
+</menu>

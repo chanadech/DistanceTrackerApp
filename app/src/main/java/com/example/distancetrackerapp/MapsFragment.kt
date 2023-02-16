@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.distancetrackerapp.databinding.FragmentMapsBinding
 import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
@@ -36,6 +38,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     ): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
 
+
+
         binding.startButton.setOnClickListener {
 
         }
@@ -43,6 +47,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
         }
         binding.refreshButton.setOnClickListener {
+
+        }
+
+        binding.toolsButton.setOnClickListener{ view ->
+            view.findNavController().navigate(R.id.action_mapsFragment_to_mapsFragmentWithTools)
+
 
         }
         return binding.root

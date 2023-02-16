@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="6dp"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.AiANG.Sharp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="?minTouchTargetSize"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/tmp_mission_title"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginVertical="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/file_new"
+                        style="@style/Widget.AiANG.Button.IconButton.Borderless"
+                        app:icon="@drawable/ic_file_add_filled_24dp"
+                        app:iconTint="?android:textColorPrimary"
+                        tools:ignore="ContentDescription" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/file_open"
+                        style="@style/Widget.AiANG.Button.IconButton.Borderless"
+                        app:icon="@drawable/ic_folder_open_filled_24dp"
+                        app:iconTint="?android:textColorPrimary"
+                        tools:ignore="ContentDescription" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/file_save"
+                        style="@style/Widget.AiANG.Button.IconButton.Borderless"
+                        app:icon="@drawable/ic_save_filled_24dp"
+                        app:iconTint="?android:textColorPrimary"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:hint="@string/tmp_mission_name_hint"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textCapSentences"
+                    android:textSize="14dp" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/mission_type_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mission_type_sprayer"
+                        style="@style/Widget.AiANG.Button.Outlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/fert_mode_title_sprayer"
+                        android:textSize="16dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mission_type_spreader"
+                        style="@style/Widget.AiANG.Button.Outlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/fert_mode_title_spreader"
+                        android:textSize="16dp" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/sprayer_flight_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:paddingStart="12dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/tmp_mission_flight_parameters_title"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sprayer_flight_header_icon"
+                    style="@style/Widget.AiANG.Button.IconButton.Borderless"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    app:icon="@drawable/ic_expand_less_filled_24dp"
+                    app:rippleColor="@android:color/transparent" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/sprayer_flight_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:scrollIndicators="top">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/altitude_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:paddingTop="16dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/tmp_mission_flight_parameters_altitude_title"
+                                android:textColor="?android:textColorPrimary"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/altitude_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:textColor="?colorPrimary"
+                                android:textSize="34dp"
+                                android:textStyle="bold"
+                                android:text="100"
+                                tools:text="100" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/altitude_dec"
+                                style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:icon="@drawable/ic_remove_filled_24dp" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/altitude_slider"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="8dp"
+                                android:layout_weight="1"
+                                android:stepSize="0.1"
+                                android:valueFrom="0.5"
+                                android:valueTo="30"
+                                app:labelBehavior="gone"
+                                app:tickVisible="false" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/altitude_inc"
+                                style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:icon="@drawable/ic_add_filled_24dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="?minTouchTargetSize">
+
+                            <TextView
+                                android:id="@+id/altitude_min"
+                                android:layout_width="?minTouchTargetSize"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="14dp"
+                                tools:text="0" />
+
+                            <Space style="@style/Widget.AiANG.Spacer" />
+
+                            <TextView
+                                android:id="@+id/altitude_max"
+                                android:layout_width="?minTouchTargetSize"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="14dp"
+                                tools:text="100" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/sprayer_speed_section"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:paddingTop="16dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
+                                    android:text="@string/tmp_mission_flight_parameters_speed_title"
+                                    android:textColor="?android:textColorPrimary"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/sprayer_speed_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:textColor="?colorPrimary"
+                                    android:textSize="34dp"
+                                    android:textStyle="bold"
+                                    tools:text="100" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="-4dp"
+                                android:layout_marginEnd="-4dp"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/sprayer_speed_dec"
+                                    style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:icon="@drawable/ic_remove_filled_24dp" />
+
+                                <com.google.android.material.slider.Slider
+                                    android:id="@+id/sprayer_speed_slider"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="8dp"
+                                    android:layout_weight="1"
+                                    android:stepSize="0.1"
+                                    android:valueFrom="0.5"
+                                    android:valueTo="10"
+                                    app:labelBehavior="gone"
+                                    app:tickVisible="false" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/sprayer_speed_inc"
+                                    style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:icon="@drawable/ic_add_filled_24dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="-4dp"
+                                android:layout_marginEnd="-4dp"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="?minTouchTargetSize">
+
+                                <TextView
+                                    android:id="@+id/sprayer_speed_min"
+                                    android:layout_width="?minTouchTargetSize"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="14dp"
+                                    tools:text="0" />
+
+                                <Space style="@style/Widget.AiANG.Spacer" />
+
+                                <TextView
+                                    android:id="@+id/sprayer_speed_max"
+                                    android:layout_width="?minTouchTargetSize"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="14dp"
+                                    tools:text="100" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/spreader_speed_section"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:paddingTop="16dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
+                                    android:text="@string/tmp_mission_flight_parameters_speed_title"
+                                    android:textColor="?android:textColorPrimary"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/spreader_speed_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:textColor="?colorPrimary"
+                                    android:textSize="34dp"
+                                    android:text="100"
+                                    android:textStyle="bold"
+                                    tools:text="100" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="-4dp"
+                                android:layout_marginEnd="-4dp"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/spreader_speed_dec"
+                                    style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:icon="@drawable/ic_remove_filled_24dp" />
+
+                                <com.google.android.material.slider.Slider
+                                    android:id="@+id/spreader_speed_slider"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="8dp"
+                                    android:layout_weight="1"
+                                    android:stepSize="0.1"
+                                    android:valueFrom="0.5"
+                                    android:valueTo="10"
+                                    app:labelBehavior="gone"
+                                    app:tickVisible="false" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/spreader_speed_inc"
+                                    style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:icon="@drawable/ic_add_filled_24dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="-4dp"
+                                android:layout_marginEnd="-4dp"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="?minTouchTargetSize">
+
+                                <TextView
+                                    android:id="@+id/spreader_speed_min"
+                                    android:layout_width="?minTouchTargetSize"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="14dp"
+                                    tools:text="0" />
+
+                                <Space style="@style/Widget.AiANG.Spacer" />
+
+                                <TextView
+                                    android:id="@+id/spreader_speed_max"
+                                    android:layout_width="?minTouchTargetSize"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textSize="14dp"
+                                    tools:text="100" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/interval_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:paddingTop="16dp"
+                                android:paddingEnd="8dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/tmp_mission_flight_parameters_width_title"
+                                android:textColor="?android:textColorPrimary"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/interval_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:textColor="?colorPrimary"
+                                android:textSize="34dp"
+                                android:text="100"
+                                android:textStyle="bold"
+                                tools:text="100" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/interval_dec"
+                                style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:icon="@drawable/ic_remove_filled_24dp" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/interval_slider"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="8dp"
+                                android:layout_weight="1"
+                                android:stepSize="0.1"
+                                android:valueFrom="0.5"
+                                android:valueTo="10"
+                                app:labelBehavior="gone"
+                                app:tickVisible="false" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/interval_inc"
+                                style="@style/Widget.AiANG.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:icon="@drawable/ic_add_filled_24dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="?minTouchTargetSize">
+
+                            <TextView
+                                android:id="@+id/interval_min"
+                                android:layout_width="?minTouchTargetSize"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="14dp"
+                                tools:text="0" />
+
+                            <Space style="@style/Widget.AiANG.Spacer" />
+
+                            <TextView
+                                android:id="@+id/interval_max"
+                                android:layout_width="?minTouchTargetSize"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="14dp"
+                                tools:text="100" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="4dp" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_overlay"
+        android:clickable="true"
+        android:divider="@drawable/linearlayout_divider_transparent_16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:visibility="invisible"
+        tools:ignore="UseCompoundDrawables"
+        tools:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Working in Progress..."
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
+            tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+</FrameLayout>

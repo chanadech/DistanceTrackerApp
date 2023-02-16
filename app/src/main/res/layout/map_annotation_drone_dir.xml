@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/spotlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0.5dp"
+        android:src="@drawable/ic_compass_gimbal_yaw"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/drone_dir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@android:color/white"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/drone_dir"
+        android:layout_width="11dp"
+        android:layout_height="12dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_triangle_filled_24dp"
+        app:layout_constraintBottom_toTopOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="?colorPrimary" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/map_annotation_drone_rounded_underlay"
+        app:layout_constraintBottom_toBottomOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="@id/drone"
+        app:layout_constraintStart_toStartOf="@id/drone"
+        app:layout_constraintTop_toTopOf="@id/drone"
+        app:tint="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/drone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_drone_rounded_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorPrimary" />
+
+    <ImageView
+        android:id="@+id/overlay_propeller_yaw_45"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/map_annotation_drone_rounded_overlay_propeller_yaw_45"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="@id/drone"
+        app:layout_constraintStart_toStartOf="@id/drone"
+        app:layout_constraintTop_toTopOf="@id/drone"
+        tools:tint="#00FF00"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/overlay_propeller_yaw_135"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/map_annotation_drone_rounded_overlay_propeller_yaw_135"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="@id/drone"
+        app:layout_constraintStart_toStartOf="@id/drone"
+        app:layout_constraintTop_toTopOf="@id/drone"
+        tools:tint="#00FF00"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/overlay_propeller_yaw_225"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/map_annotation_drone_rounded_overlay_propeller_yaw_225"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="@id/drone"
+        app:layout_constraintStart_toStartOf="@id/drone"
+        app:layout_constraintTop_toTopOf="@id/drone"
+        tools:tint="#FF0000"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/overlay_propeller_yaw_315"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/map_annotation_drone_rounded_overlay_propeller_yaw_315"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/drone"
+        app:layout_constraintEnd_toEndOf="@id/drone"
+        app:layout_constraintStart_toStartOf="@id/drone"
+        app:layout_constraintTop_toTopOf="@id/drone"
+        tools:tint="#FF0000"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

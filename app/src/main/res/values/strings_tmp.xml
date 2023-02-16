@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="tmp_status_no_signal">No Signal</string>
+
+    <string name="tmp_ground_overlays_field_area_title">Field Area</string>
+    <string name="tmp_ground_overlays_working_area_title">Working Area</string>
+    <string name="tmp_ground_overlays_payload_quantity_title">Payload Quantity</string>
+    <string name="tmp_ground_overlays_distance_title">Distance</string>
+
+    <string name="tmp_field_title">Field</string>
+    <string name="tmp_field_name_hint">Field name goes here…</string>
+    <string name="tmp_field_format_title">Format</string>
+    <string name="tmp_field_format_freeform">Freeform</string>
+    <string name="tmp_field_management_title">Management</string>
+    <string name="tmp_field_management_mark_crosshair">Mark at Crosshair</string>
+    <string name="tmp_field_management_mark_tablet">Mark at Tablet</string>
+    <string name="tmp_field_management_mark_aircraft">Mark at Aircraft</string>
+
+    <string name="tmp_mission_title">Mission</string>
+    <string name="tmp_mission_name_hint">Mission name goes here…</string>
+
+    <string name="tmp_mission_flight_parameters_title">Flight Parameters</string>
+    <string name="tmp_mission_flight_parameters_altitude_title">Altitude (m)</string>
+    <string name="tmp_mission_flight_parameters_speed_title">Speed (m/s)</string>
+    <string name="tmp_mission_flight_parameters_width_title">Width (m)</string>
+
+    <string name="tmp_mission_spraying_parameters_title">Spraying Parameters</string>
+    <string name="tmp_mission_spreading_parameters_title">Spreading Parameters</string>
+
+
+    <string name="tmp_show_map_annotation_bounds">Show map annotation bounds</string>
+    <string name="tmp_more">More</string>
+    <string name="tmp_version">Version</string>
+    <string name="tmp_additional_application_settings">Additional Application Settings</string>
+    <string name="tmp_privacy_policy">Privacy Policy</string>
+
+    <string name="tmp_privacy_analytics_title">Analytics &amp; Improvements</string>
+    <string name="tmp_privacy_analytics_desc">Help us improve our products and services by automatically sending crash reports, diagnostics and usage data.</string>
+
+</resources>

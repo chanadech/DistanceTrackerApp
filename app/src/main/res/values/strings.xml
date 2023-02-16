@@ -12,5 +12,6 @@
     <string name="reset">Reset</string>
     <string name="tap_on_my_location_button">Tap on My location Button</string>
     <string name="_3">3</string>
-
+    <string name="fert_mode_title_sprayer">Sprayer</string>
+    <string name="fert_mode_title_spreader">Spreader</string>
 </resources>
