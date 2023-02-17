@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="continue_text">Continue</string>
-    <string name="permission_description">Lorem ipsum dsajkdlasjdfkljfewiofwopdvkdsop[viwkovajepvjrijver[nvroianvornfionqweofnowefnowefnwe</string>
+    <string name="permission_description">Please allow permission before use the application</string>
     <string name="permission_required">Permission Required</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_maps2">MapsActivity2</string>
