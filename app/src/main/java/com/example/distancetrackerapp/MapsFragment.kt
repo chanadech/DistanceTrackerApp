@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.distancetrackerapp.databinding.FragmentMapsBinding
+import com.example.distancetrackerapp.utils.ExtensionFunction.disable
 import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
 import com.example.distancetrackerapp.utils.Permissions
@@ -89,9 +92,38 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     private fun onStartButtonClick() {
         if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){ // Check the background location permissions when user tab start button if true -> Log
             Log.d("MapsActivity","Background Permission already enabled")
+            startCountDown()
+            binding.startButton.disable()
+            binding.startButton.hide()
+            binding.stopButton.show()
+
         } else {
             requestBackgroundLocationPermission(this)
         }
+    }
+
+    private fun startCountDown() {
+        binding.timerTextView.show()
+        binding.stopButton.disable() // we dont want user to cancel anything when count down timer is start, when the count down timer is timer is finished and we recerive a final location from our service -> enable stop button
+        val timer: CountDownTimer = object : CountDownTimer(4000, 1000) { // start time (4),(1) =>  3 ,2 ,1, 0
+            override fun onTick(millisUntilFinished: Long) {       // trigger in every second
+                val currentSecond = millisUntilFinished / 1000     // (millisUntilFinished / one second) = currentSecond on every tick in our countdown timer ; current second = 3 -> 2 -> 1 -> 0
+                if (currentSecond.toString() == "0"){
+                    binding.timerTextView.text = "GO"
+                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+                }
+                else {
+                    binding.timerTextView.text = currentSecond.toString()
+                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                }
+            }
+
+            override fun onFinish() {  // trigger when count down timer is complete
+                binding.timerTextView.hide()
+            }
+        }
+        timer.start()
+
     }
 
     override fun onMyLocationButtonClick(): Boolean {                           // handle how myLocation button clicked
