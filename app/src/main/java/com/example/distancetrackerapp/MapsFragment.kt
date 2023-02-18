@@ -1,6 +1,7 @@
 package com.example.distancetrackerapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -14,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.distancetrackerapp.databinding.FragmentMapsBinding
+import com.example.distancetrackerapp.service.TrackerService
+import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.ExtensionFunction.disable
 import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
@@ -119,10 +122,22 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             }
 
             override fun onFinish() {  // trigger when count down timer is complete
+                sendActionCommandToService(Constants.ACTION_SERVICE_START)
                 binding.timerTextView.hide()
             }
         }
         timer.start()
+    }
+
+    private fun sendActionCommandToService(action:String) { //        // this function will send a specific action that give as parameter to our TrackerService and after that we want to start our service
+                                                                      // should be call on onFinish -> request Service after  countdown onFinish() success
+        Intent(
+            requireContext(),
+            TrackerService::class.java
+        ).apply{
+            this.action = action
+            requireContext().startService(this) // this = intent
+        }
 
     }
 

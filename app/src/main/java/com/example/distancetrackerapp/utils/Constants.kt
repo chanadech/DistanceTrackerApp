@@ -5,4 +5,11 @@ object Constants {
     const val PERMISSIONS_LOCATION_REQUEST_CODE = 1
     const val PERMISSION_BACKGROUD_LOCATION_REQUEST_CODE = 2
 
+
+    // use for sent command from mapfragment to trigger service
+    const  val ACTION_SERVICE_START = "ACTION_SERVICE_START"
+    const val ACTION_SERVICE_STOP = "ACTION_SERVICE_STOP"
+
+
+
 }
