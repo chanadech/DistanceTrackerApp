@@ -1,8 +1,9 @@
-package com.example.distancetrackerapp
+package com.example.distancetrackerapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
+import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.utils.Permissions
 
 

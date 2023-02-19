@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.example.distancetrackerapp.MainActivity
+import com.example.distancetrackerapp.ui.MainActivity
 import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.utils.Constants
 import dagger.Module
@@ -27,9 +27,9 @@ object NotificationModule {
         return PendingIntent.getActivity(
             context,
             Constants.PENDING_INTENT_REQUEST_CODE,
-            Intent(context,MainActivity::class.java).apply {
-                this.action = Constants.ACTION_NAVIGATE_TO_MAP_FRAGMENT
-            },
+            Intent(context, MainActivity::class.java)                             // PENDING INTENT DEFINE WHERE WE WANT TO NAVIGATE WHEN WE PRESS OUR NOTIFICATION
+            // .apply { this.action = Constants.ACTION_NAVIGATE_TO_MAP_FRAGMENT } // check by navigation in MainActivity instead of this
+            ,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
     }
@@ -37,7 +37,7 @@ object NotificationModule {
 
     @ServiceScoped
     @Provides
-    fun provideNotificationBuilder(         // function to describe how to provide notification
+    fun provideNotificationBuilder(                                              // function to describe how to provide notification
         @ApplicationContext context:Context,
         pendingIntent: PendingIntent
     ):NotificationCompat.Builder{
@@ -45,7 +45,7 @@ object NotificationModule {
             .setAutoCancel(false)  // ยกเลิก autocancel อัตโนมัติไม่ได้
             .setOngoing(true)      //  ทำให้การแจ้งเตือนคงที่และยกเลิกไม่ได้ -> หยุดเมื่อ stop service\
             .setSmallIcon(R.drawable.ic_run_24)
-            .setContentIntent(pendingIntent)   // launch mapfragment from our notification -> tap noti then map appears -> create function to show how to provide the pending intent
+            .setContentIntent(pendingIntent)                                     // launch mapfragment from our notification -> tap noti then map appears -> create function to show how to provide the pending intent
     }
 
     // tell dagger lib how to provide notification manager

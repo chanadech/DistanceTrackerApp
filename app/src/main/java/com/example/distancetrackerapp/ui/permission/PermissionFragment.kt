@@ -1,4 +1,4 @@
-package com.example.distancetrackerapp
+package com.example.distancetrackerapp.ui.permission
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.databinding.FragmentPermissionBinding
 import com.example.distancetrackerapp.utils.Permissions
 import pub.devrel.easypermissions.AppSettingsDialog

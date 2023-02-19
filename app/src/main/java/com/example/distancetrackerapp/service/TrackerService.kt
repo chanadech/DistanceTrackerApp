@@ -43,6 +43,7 @@ class TrackerService : LifecycleService() {
             when (it.action) {
                 ACTION_SERVICE_START -> {
                     started.postValue(true)
+                    startForegroundService()        // RECEIVED COMMAND THAT SEND FROM TRACKERSERVICE WILL START FOREGROUNDSERVICE
                 }
 
                 ACTION_SERVICE_STOP -> {
@@ -60,6 +61,10 @@ class TrackerService : LifecycleService() {
         )
     }
 
+    private fun startForegroundService(){ // call after send action
+        createNotificationChannel()       // check api >= 26
+        startForeground(Constants.NOTIFICATION_ID, notification.build()) // OPEN A NEW NOTIFICATION
+    }
     //function to create notification channel
     fun createNotificationChannel(){ // if we use > API 26 (0) -> can create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

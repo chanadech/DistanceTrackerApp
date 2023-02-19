@@ -41,7 +41,7 @@
             android:value="AIzaSyBR5BPe4tahCGc71N605gGwJovHKTn6bqA" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.distancetrackerapp
+package com.example.distancetrackerapp.ui.maps
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,10 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
+import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.databinding.FragmentMapsBinding
 import com.example.distancetrackerapp.service.TrackerService
 import com.example.distancetrackerapp.utils.Constants
@@ -23,14 +24,10 @@ import com.example.distancetrackerapp.utils.ExtensionFunction.show
 import com.example.distancetrackerapp.utils.Permissions
 import com.example.distancetrackerapp.utils.requestBackgroundLocationPermission
 
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -96,7 +93,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     private fun onStartButtonClick() {
         if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){ // Check the background location permissions when user tab start button if true -> Log
             Log.d("MapsActivity","Background Permission already enabled")
-            startCountDown()
+            startCountDown()                                             // START BUTTON CLICK THEN START COUNTDOWN
             binding.startButton.disable()
             binding.startButton.hide()
             binding.stopButton.show()
@@ -114,16 +111,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 val currentSecond = millisUntilFinished / 1000     // (millisUntilFinished / one second) = currentSecond on every tick in our countdown timer ; current second = 3 -> 2 -> 1 -> 0
                 if (currentSecond.toString() == "0"){
                     binding.timerTextView.text = "GO"
-                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.black
+                    ))
                 }
                 else {
                     binding.timerTextView.text = currentSecond.toString()
-                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                    binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.red
+                    ))
                 }
             }
 
             override fun onFinish() {  // trigger when count down timer is complete
-                sendActionCommandToService(Constants.ACTION_SERVICE_START)
+                sendActionCommandToService(Constants.ACTION_SERVICE_START)   // SEND COMMAND TO TRACKERSERVICE AFTER COUNTDOWN FINISH
                 binding.timerTextView.hide()
             }
         }
