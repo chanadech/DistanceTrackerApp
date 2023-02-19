@@ -14,4 +14,10 @@
     <string name="_3">3</string>
     <string name="fert_mode_title_sprayer">Sprayer</string>
     <string name="fert_mode_title_spreader">Spreader</string>
+    <string name="normal">Normal</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="terrain">terrain</string>
+    <string name="satellite">Satellite</string>
+    <string name="none_map">None</string>
+
 </resources>
