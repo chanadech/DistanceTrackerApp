@@ -1,16 +1,25 @@
 package com.example.distancetrackerapp.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.content.Intent
 import android.os.Build
+import android.os.Looper
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_START
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_STOP
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,8 +32,24 @@ class TrackerService : LifecycleService() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
     companion object {
         val started = MutableLiveData<Boolean>()
+    }
+
+    private val locationCallback = object  : LocationCallback(){
+        override fun onLocationResult(result: LocationResult) { // will be called every few seconds and when we receive a new location update from our user
+            super.onLocationResult(result)
+            result?.locations?.let {locations ->
+                for(location in locations) {
+                    val newLatLng = LatLng(location.latitude, location.longitude) // receive new location from user will print new latlng
+                    Log.d("TrackerService", newLatLng.toString())
+                }
+
+            }
+        }
+
     }
 
     private fun setInitialValues(){
@@ -33,6 +58,7 @@ class TrackerService : LifecycleService() {
 
     override fun onCreate() {
         setInitialValues()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         super.onCreate()
     }
 
@@ -44,6 +70,7 @@ class TrackerService : LifecycleService() {
                 ACTION_SERVICE_START -> {
                     started.postValue(true)
                     startForegroundService()        // RECEIVED COMMAND THAT SEND FROM TRACKERSERVICE WILL START FOREGROUNDSERVICE
+                    startLocationUpdates()
                 }
 
                 ACTION_SERVICE_STOP -> {
@@ -65,6 +92,24 @@ class TrackerService : LifecycleService() {
         createNotificationChannel()       // check api >= 26
         startForeground(Constants.NOTIFICATION_ID, notification.build()) // OPEN A NEW NOTIFICATION
     }
+
+    // function get location update in every 2-3 sec
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates(){
+        val locationRequest  = LocationRequest().apply { // สร้าง object สำหรับ ขอตำแหน่งแบบพื้นฐานแล้ว
+            interval  = Constants.LOCATION_UPDATE_INTERVAL                //ช่วงเวลาจริงที่เราต้องการอัพเดทตำแหน่ง
+            fastestInterval = Constants.LOCATION_FASTEST_UPDATE_INTERVAL
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
+
+
     //function to create notification channel
     fun createNotificationChannel(){ // if we use > API 26 (0) -> can create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -76,5 +121,4 @@ class TrackerService : LifecycleService() {
             notificationManager.createNotificationChannel(channel) // NotificationChannel will create when we use sdk version >= 26 if not will not need notification channel
         }
     }
-
 }
