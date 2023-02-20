@@ -3,13 +3,14 @@ package com.example.distancetrackerapp
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil.setContentView
+import android.widget.Toast
 import com.example.distancetrackerapp.databinding.FragmentMapsWithToolsBinding
 import com.example.distancetrackerapp.utils.TypeAndStyle
 
@@ -19,14 +20,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
 
-class MapsWithToolsFragment : Fragment() ,OnMapReadyCallback{
+class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap                              // 1. initial map variable ก่อน เพื้่อเอาไปใช้ใน  onMapReady function
     private lateinit var binding: FragmentMapsWithToolsBinding
     private val typeAndStyle by lazy { TypeAndStyle() }
 
     private val ati = LatLng(14.084037703890884, 100.42053077551579)
+
+    private val markerPositions = mutableListOf<LatLng>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,15 +53,17 @@ class MapsWithToolsFragment : Fragment() ,OnMapReadyCallback{
         map = googleMap
         typeAndStyle.setMapStyle(map, requireContext())
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(ati,10f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(ati, 10f))
 
         map.uiSettings.apply {
             isZoomControlsEnabled = true        // ทำให้มีปุ่ม +- สำหรับ zoomเข้าออก เพิ่มขึ้นมาในหน้าแอป
             isCompassEnabled = true             // ทำให้มีเข็มทิศโผล่มุมซ้ายเวลากด rotate ถ้ากดเข็มทิศมันก็จะพากลับมาที่ default location ละก็ค่อยๆหายไป อยาก disable ก็แค่ set fault
             isMyLocationButtonEnabled = true    // ทำให้มาโลเคชั่นของเครื่องที่ใช้อยู่โดยตรง -> ใช้ได้ต่อเมื่อ myLocation layer enable นะ -> เดี่ยวทำทีหลัง
         }
-    }
 
+        onMapClick(true)
+
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,7 +72,29 @@ class MapsWithToolsFragment : Fragment() ,OnMapReadyCallback{
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        typeAndStyle.setMapType(item,map)
+        typeAndStyle.setMapType(item, map)
         return true
+    }
+
+    private fun onMapClick(enablePolygon: Boolean) {
+        when (enablePolygon) {
+            true -> map.setOnMapClickListener { latlng ->
+                Toast.makeText(
+                    requireContext(),
+                    "Latitude: ${latlng.latitude}\n Longitude: ${latlng.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val marker = map.addMarker(MarkerOptions().position(latlng).title("New Marker"))
+                markerPositions.add(latlng)
+                val polygonOptions = PolygonOptions().apply {
+                    addAll(markerPositions)
+                    strokeColor(R.color.orange)
+//                fillColor(R.color.black)
+                }
+                val polygon = map.addPolygon(polygonOptions)
+            }
+            else -> {Log.i("MapsWithToolsFragment", "Map polygon not available")}
+        }
+
     }
 }
