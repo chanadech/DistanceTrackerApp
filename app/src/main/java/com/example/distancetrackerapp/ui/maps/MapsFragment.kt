@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -39,6 +40,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     private val binding get() = _binding!!
 
     private lateinit var map: GoogleMap
+
+    private var locationList = mutableListOf<LatLng>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,8 +91,25 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             isCompassEnabled = false
             isScrollGesturesEnabled = false
         }
-
+        observeTrackerService()
     }
+
+
+     /** A WAY TO DRAW A PATH- POLYLINE to google map **/
+     // Function to observe the same location list from tracker service to fragment -> call when onMapReady
+     // Purpose -> whenever the location list from TrackerService receives new values (from updateLocationList() in TrackerService)
+     //         ->  our maps fragment will be observe that same locationList
+     //         ->  and go to update our new list (locationList that create from mapFragment )
+    private fun observeTrackerService(){
+        TrackerService.locationList.observe(viewLifecycleOwner, {
+            if (it != null){
+                locationList = it                                      // Check locationList isnt null -> update locationList object value that create from mapfragment to locationList that create from tracker service (new list)
+                Log.d("LocationList", locationList.toString())    // Output from update list = location 1 -> 1,2 -> 1,2,3 -> 1,2,3,..
+            }
+        })
+    }
+
+
     private fun onStartButtonClick() {
         if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){ // Check the background location permissions when user tab start button if true -> Log
             Log.d("MapsActivity","Background Permission already enabled")
