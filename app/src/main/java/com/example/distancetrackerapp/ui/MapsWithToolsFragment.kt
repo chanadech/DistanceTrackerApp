@@ -1,6 +1,4 @@
-package com.example.distancetrackerapp
-
-import androidx.fragment.app.Fragment
+package com.example.distancetrackerapp.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.databinding.FragmentMapsWithToolsBinding
 import com.example.distancetrackerapp.utils.TypeAndStyle
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.material.navigationrail.NavigationRailView
 
 class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
 
@@ -40,6 +40,7 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
         binding = FragmentMapsWithToolsBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+
         return binding.root
     }
 
@@ -47,13 +48,34 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
+        val rail: NavigationRailView = binding.missionRail
+
+        binding.missionRail.setOnClickListener{
+            Toast.makeText(
+                requireContext(),
+                "Clicked",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        binding.missionRail.menu.findItem(R.id.mission_tab_field).setOnMenuItemClickListener {
+            false }
+
+
+
+
+
+
+
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         typeAndStyle.setMapStyle(map, requireContext())
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(ati, 10f))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(ati, 30f))
 
         map.uiSettings.apply {
             isZoomControlsEnabled = true        // ทำให้มีปุ่ม +- สำหรับ zoomเข้าออก เพิ่มขึ้นมาในหน้าแอป

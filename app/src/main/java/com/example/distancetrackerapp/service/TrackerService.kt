@@ -39,9 +39,9 @@ class TrackerService : LifecycleService() {
     }
 
     private val locationCallback = object  : LocationCallback(){
-        override fun onLocationResult(result: LocationResult) { // will be called every few seconds and when we receive a new location update from our user
+        override fun onLocationResult(result: LocationResult) { // will be called every few seconds  when we receive a new location update from our user
             super.onLocationResult(result)
-            result?.locations?.let {locations ->
+            result?.locations?.let { locations ->
                 for(location in locations) {
                     val newLatLng = LatLng(location.latitude, location.longitude) // receive new location from user will print new latlng
                     Log.d("TrackerService", newLatLng.toString())
@@ -99,9 +99,9 @@ class TrackerService : LifecycleService() {
         val locationRequest  = LocationRequest().apply { // สร้าง object สำหรับ ขอตำแหน่งแบบพื้นฐานแล้ว
             interval  = Constants.LOCATION_UPDATE_INTERVAL                //ช่วงเวลาจริงที่เราต้องการอัพเดทตำแหน่ง
             fastestInterval = Constants.LOCATION_FASTEST_UPDATE_INTERVAL
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY            // ต้องการความแม่นยำส๎งเพื่อติดตาม user
         }
-        fusedLocationProviderClient.requestLocationUpdates(
+        fusedLocationProviderClient.requestLocationUpdates( // ปกติต้องเช็ค permission -> แต่อันนี้เราได้รับอยู่แล้วเลยใช้ SuppressLint เลย
             locationRequest,
             locationCallback,
             Looper.getMainLooper()

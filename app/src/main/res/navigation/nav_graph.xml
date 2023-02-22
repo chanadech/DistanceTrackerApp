@@ -39,6 +39,6 @@
     </fragment>
     <fragment
         android:id="@+id/mapsFragmentWithTools"
-        android:name="com.example.distancetrackerapp.MapsWithToolsFragment"
+        android:name="com.example.distancetrackerapp.ui.MapsWithToolsFragment"
         android:label="MapsFragmentWithTools" />
 </navigation>
