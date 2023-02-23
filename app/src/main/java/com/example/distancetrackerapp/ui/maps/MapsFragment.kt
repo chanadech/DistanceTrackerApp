@@ -20,6 +20,7 @@ import com.example.distancetrackerapp.databinding.FragmentMapsBinding
 import com.example.distancetrackerapp.service.TrackerService
 import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.ExtensionFunction.disable
+import com.example.distancetrackerapp.utils.ExtensionFunction.enable
 import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
 import com.example.distancetrackerapp.utils.Permissions
@@ -63,6 +64,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
         }
         binding.stopButton.setOnClickListener {
+            // Enable the stop button when our location list has atleast one lat long object inside
 
         }
         binding.refreshButton.setOnClickListener {
@@ -105,18 +107,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
      // Function to observe the same location list from tracker service to fragment -> call when onMapReady
      // Purpose -> whenever the location list from TrackerService receives new values (from updateLocationList() in TrackerService)
      //         ->  our maps fragment will be observe that same locationList
-     //         ->  and go to update our new list (locationList that create from mapFragment )
+     //             ->  and go to update our new list (locationList that create from mapFragment )
     private fun observeTrackerService(){
-        TrackerService.locationList.observe(viewLifecycleOwner, {
-            if (it != null){
-                locationList = it                                      // Check locationList isnt null -> update locationList object value that create from mapfragment to locationList that create from tracker service (new list)
-                Log.d("LocationList", locationList.toString())    // Output from update list = location 1 -> 1,2 -> 1,2,3 -> 1,2,3,..
+        TrackerService.locationList.observe(viewLifecycleOwner) {
+            if (it != null) {
+                locationList = it                                    // Check locationList isn't null -> update locationList object value that create from mapfragment to locationList that create from tracker service (new list)
+                if(locationList.size > 1) {
+                    binding.stopButton.enable()                      // Enable stop button -> Check if location list is not empty and only if we receive atleast one latlong object update inside
+                }
+                Log.d("LocationList", locationList.toString())   // Output from update list = location 1 -> 1,2 -> 1,2,3 -> 1,2,3,..
                 drawPolyLine()
                 followPolyLine()
-
             }
-        })
-    }
+        }
+     }
 
     private fun drawPolyLine(){
         val polyLine = map.addPolyline(
