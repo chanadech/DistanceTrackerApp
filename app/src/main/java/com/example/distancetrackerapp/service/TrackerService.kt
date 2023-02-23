@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
+import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Build
@@ -15,6 +16,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_START
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_STOP
+import com.example.distancetrackerapp.utils.Constants.NOTIFICATION_ID
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -88,7 +90,7 @@ class TrackerService : LifecycleService() {
 
                 ACTION_SERVICE_STOP -> {
                     started.postValue(false)
-
+                    stopForegroundService()
                 }
 
                 else -> {}
@@ -101,10 +103,13 @@ class TrackerService : LifecycleService() {
         )
     }
 
+
+
     private fun startForegroundService(){ // call after send action
         createNotificationChannel()       // check api >= 26
         startForeground(Constants.NOTIFICATION_ID, notification.build()) // OPEN A NEW NOTIFICATION
     }
+
 
     // function get location update in every 2-3 sec
     @SuppressLint("MissingPermission")
@@ -121,7 +126,18 @@ class TrackerService : LifecycleService() {
         )
     }
 
+    private fun stopForegroundService() {
+        removeLocationUpdate()
+        (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel( // close our notifications
+            NOTIFICATION_ID
+        )
+        stopForeground(true)
+        stopSelf()
+    }
 
+    private fun removeLocationUpdate() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
 
     //function to create notification channel
     fun createNotificationChannel(){ // if we use > API 26 (0) -> can create notification channel

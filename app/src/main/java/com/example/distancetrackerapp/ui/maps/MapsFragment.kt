@@ -65,6 +65,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         }
         binding.stopButton.setOnClickListener {
             // Enable the stop button when our location list has atleast one lat long object inside
+            onStopButtonClick()
 
         }
         binding.refreshButton.setOnClickListener {
@@ -78,6 +79,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         }
         return binding.root
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -169,12 +171,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         }
     }
 
+    private fun onStopButtonClick() {
+         stopForegroundService()
+        binding.stopButton.hide()
+        binding.startButton.show()
+
+    }
+
+
+
     private fun startCountDown() {
         binding.timerTextView.show()
-        binding.stopButton.disable() // we dont want user to cancel anything when count down timer is start, when the count down timer is timer is finished and we recerive a final location from our service -> enable stop button
-        val timer: CountDownTimer = object : CountDownTimer(4000, 1000) { // start time (4),(1) =>  3 ,2 ,1, 0
-            override fun onTick(millisUntilFinished: Long) {       // trigger in every second
-                val currentSecond = millisUntilFinished / 1000     // (millisUntilFinished / one second) = currentSecond on every tick in our countdown timer ; current second = 3 -> 2 -> 1 -> 0
+        binding.stopButton.disable()                                                                   // we dont want user to cancel anything when count down timer is start, when the count down timer is timer is finished and we recerive a final location from our service -> enable stop button
+        val timer: CountDownTimer = object : CountDownTimer(4000, 1000) {   // start time (4),(1) =>  3 ,2 ,1, 0
+            override fun onTick(millisUntilFinished: Long) {                                           // trigger in every second
+                val currentSecond = millisUntilFinished / 1000                                         // (millisUntilFinished / one second) = currentSecond on every tick in our countdown timer ; current second = 3 -> 2 -> 1 -> 0
                 if (currentSecond.toString() == "0"){
                     binding.timerTextView.text = "GO"
                     binding.timerTextView.setTextColor(ContextCompat.getColor(requireContext(),
@@ -189,7 +200,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 }
             }
 
-            override fun onFinish() {  // trigger when count down timer is complete
+            override fun onFinish() {                                        // trigger when count down timer is complete
                 sendActionCommandToService(Constants.ACTION_SERVICE_START)   // SEND COMMAND TO TRACKERSERVICE AFTER COUNTDOWN FINISH
                 binding.timerTextView.hide()
             }
@@ -197,7 +208,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         timer.start()
     }
 
-    private fun sendActionCommandToService(action:String) { //        // this function will send a specific action that give as parameter to our TrackerService and after that we want to start our service
+    private fun stopForegroundService() {
+        binding.startButton.disable()
+        sendActionCommandToService(Constants.ACTION_SERVICE_STOP)
+    }
+
+    private fun sendActionCommandToService(action:String) {           // this function will send a specific action that give as parameter to our "TrackerService" and after that we want to start our service
                                                                       // should be call on onFinish -> request Service after  countdown onFinish() success
         Intent(
             requireContext(),
@@ -209,7 +225,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
     }
 
-    override fun onMyLocationButtonClick(): Boolean {                           // handle how myLocation button clicked
+    override fun onMyLocationButtonClick(): Boolean {                                 // handle how myLocation button clicked
         binding.hintTextView.animate().alpha(0f).duration = 1500                // animate textview when press our location button -> alpha value -> 1 show, 0 gone
         lifecycleScope.launch{
             delay(2500)
