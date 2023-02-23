@@ -2,6 +2,7 @@ package com.example.distancetrackerapp.ui.maps
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -23,12 +24,17 @@ import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
 import com.example.distancetrackerapp.utils.Permissions
 import com.example.distancetrackerapp.utils.requestBackgroundLocationPermission
+import com.google.android.gms.maps.CameraUpdateFactory
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.ButtCap
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -105,15 +111,51 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             if (it != null){
                 locationList = it                                      // Check locationList isnt null -> update locationList object value that create from mapfragment to locationList that create from tracker service (new list)
                 Log.d("LocationList", locationList.toString())    // Output from update list = location 1 -> 1,2 -> 1,2,3 -> 1,2,3,..
+                drawPolyLine()
+                followPolyLine()
+
             }
         })
     }
 
+    private fun drawPolyLine(){
+        val polyLine = map.addPolyline(
+            PolylineOptions().apply {
+                width(10f)
+                color(Color.BLUE)
+                jointType(JointType.ROUND)
+                startCap(ButtCap())
+                endCap(ButtCap())
+                addAll(locationList)
+
+
+
+            }
+        )
+    }
+
+
+    // function to set Camera position every time we receive a new location update -> camera will follow the user location
+    // camera position -> we will choose our last item inside the locationList
+    //                 -> last item in this location list is always a new position on the map
+    private fun followPolyLine(){
+        if(locationList.isNotEmpty()){
+            map.animateCamera(
+                (CameraUpdateFactory.newCameraPosition(
+                    MapUtil.setCamaraPosition(
+                        locationList.last()
+                    )
+                )),
+                1000,
+                null)
+        }
+    }
+
 
     private fun onStartButtonClick() {
-        if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){ // Check the background location permissions when user tab start button if true -> Log
+        if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){                // Check the background location permissions when user tab start button if true -> Log
             Log.d("MapsActivity","Background Permission already enabled")
-            startCountDown()                                             // START BUTTON CLICK THEN START COUNTDOWN
+            startCountDown()                                                                // START BUTTON CLICK THEN START COUNTDOWN
             binding.startButton.disable()
             binding.startButton.hide()
             binding.stopButton.show()
