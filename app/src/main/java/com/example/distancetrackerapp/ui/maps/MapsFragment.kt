@@ -50,6 +50,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
     private var locationList = mutableListOf<LatLng>()
 
+    // create variable for observe start and stop time from tracker service
+    private var startTime = 0L
+    private var stopTime = 0L
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -122,6 +126,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 followPolyLine()
             }
         }
+         TrackerService.startTime.observe(viewLifecycleOwner,{
+             startTime = it // set start time that create from mapfragment to start time that received from tracker service
+         })
+         TrackerService.stopTime.observe(viewLifecycleOwner,{
+             stopTime = it // set stop time that create from mapfragment to stop time that received from tracker service
+         })
      }
 
     private fun drawPolyLine(){

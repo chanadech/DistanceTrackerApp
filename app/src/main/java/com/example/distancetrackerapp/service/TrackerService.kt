@@ -41,13 +41,17 @@ class TrackerService : LifecycleService() {
     companion object {
         val started = MutableLiveData<Boolean>()
         val locationList = MutableLiveData<MutableList<LatLng>>()
+
+        val startTime = MutableLiveData<Long>()
+        val stopTime = MutableLiveData<Long>()
     }
 
 
     private fun setInitialValues(){
         started.postValue(false)
         locationList.postValue(mutableListOf()) // create empty list -> want to update this list when receive a new location from onLocationResult()
-
+        startTime.postValue(0)
+        stopTime.postValue(0)
     }
 
     private val locationCallback = object  : LocationCallback(){
@@ -124,6 +128,7 @@ class TrackerService : LifecycleService() {
             locationCallback,
             Looper.getMainLooper()
         )
+        startTime.postValue(System.currentTimeMillis()) // call after start foreground service -> put value of this start time and go to get the current time
     }
 
     private fun stopForegroundService() {
@@ -133,6 +138,7 @@ class TrackerService : LifecycleService() {
         )
         stopForeground(true)
         stopSelf()
+        stopTime.postValue(System.currentTimeMillis())
     }
 
     private fun removeLocationUpdate() {
@@ -150,4 +156,6 @@ class TrackerService : LifecycleService() {
             notificationManager.createNotificationChannel(channel) // NotificationChannel will create when we use sdk version >= 26 if not will not need notification channel
         }
     }
+
+    // Calculate the time from the point when we start our foreground service to the point when we stop our foreground service
 }
