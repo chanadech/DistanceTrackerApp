@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.distancetrackerapp.R
@@ -49,6 +50,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
     private lateinit var map: GoogleMap
 
+    val started = MutableLiveData(false)
+
     private var locationList = mutableListOf<LatLng>()
 
     // create variable for observe start and stop time from tracker service
@@ -61,6 +64,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
+
+        // Add data binding object (already set-up in xml)
+        binding.lifecycleOwner = this
+        binding.tracking = this // tracking object that create in xml
 
 
 
@@ -127,6 +134,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 followPolyLine()
             }
         }
+        TrackerService.started.observe(viewLifecycleOwner, {
+            started.value = it          // set its value to our new mutable data object which we have create inside our maps fragment
+        })
+
          TrackerService.startTime.observe(viewLifecycleOwner,{
              startTime = it             // set start time that create from mapfragment to start time that received from tracker service
          })
@@ -138,6 +149,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
              }
          })
+
      }
 
 
