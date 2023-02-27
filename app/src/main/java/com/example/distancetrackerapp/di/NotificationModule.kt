@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.distancetrackerapp.ui.MainActivity
 import com.example.distancetrackerapp.R
@@ -24,14 +25,28 @@ object NotificationModule {
     fun providePendingIntent(
         @ApplicationContext context: Context)
     : PendingIntent {
-        return PendingIntent.getActivity(
-            context,
-            Constants.PENDING_INTENT_REQUEST_CODE,
-            Intent(context, MainActivity::class.java)                             // PENDING INTENT DEFINE WHERE WE WANT TO NAVIGATE WHEN WE PRESS OUR NOTIFICATION
-            // .apply { this.action = Constants.ACTION_NAVIGATE_TO_MAP_FRAGMENT } // check by navigation in MainActivity instead of this
-            ,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            PendingIntent.getActivity(
+                context,
+                Constants.PENDING_INTENT_REQUEST_CODE,
+                Intent(context, MainActivity::class.java)                             // PENDING INTENT DEFINE WHERE WE WANT TO NAVIGATE WHEN WE PRESS OUR NOTIFICATION
+                // .apply { this.action = Constants.ACTION_NAVIGATE_TO_MAP_FRAGMENT } // check by navigation in MainActivity instead of this
+                ,
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT   //FLAG_MUTABLE -> API >= 31
+            )
+
+        }
+        else {
+            PendingIntent.getActivity(
+                context,
+                Constants.PENDING_INTENT_REQUEST_CODE,
+                Intent(context, MainActivity::class.java)                             // PENDING INTENT DEFINE WHERE WE WANT TO NAVIGATE WHEN WE PRESS OUR NOTIFICATION
+                ,
+                PendingIntent.FLAG_UPDATE_CURRENT   //FLAG_MUTABLE -> API >= 31
+            )
+
+        }
+
     }
 
 
