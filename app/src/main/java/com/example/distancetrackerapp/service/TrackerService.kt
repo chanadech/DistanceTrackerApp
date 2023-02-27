@@ -122,7 +122,7 @@ class TrackerService : LifecycleService() {
     // function get location update in every 2-3 sec
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates(){
-        val locationRequest  = LocationRequest().apply { // สร้าง object สำหรับ ขอตำแหน่งแบบพื้นฐานแล้ว
+        val locationRequest  = LocationRequest.create().apply { // สร้าง object สำหรับ ขอตำแหน่งแบบพื้นฐานแล้ว
             interval  = Constants.LOCATION_UPDATE_INTERVAL                //ช่วงเวลาจริงที่เราต้องการอัพเดทตำแหน่ง
             fastestInterval = Constants.LOCATION_FASTEST_UPDATE_INTERVAL
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY            // ต้องการความแม่นยำส๎งเพื่อติดตาม user
