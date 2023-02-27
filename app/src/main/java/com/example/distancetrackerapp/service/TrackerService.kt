@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import com.example.distancetrackerapp.ui.maps.MapUtil
 import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_START
 import com.example.distancetrackerapp.utils.Constants.ACTION_SERVICE_STOP
@@ -60,11 +61,14 @@ class TrackerService : LifecycleService() {
             result?.locations?.let { locations ->
                 for(location in locations) {
                     updateLocationList(location)
+                    updateNotificationPeriodically()
                 }
 
             }
         }
     }
+
+
 
     private fun updateLocationList(location:Location){
         val newLatLng = LatLng(location.latitude, location.longitude) // receive new location from user will print new latlng ->   Log.d("TrackerService", newLatLng.toString())
@@ -157,5 +161,13 @@ class TrackerService : LifecycleService() {
         }
     }
 
-    // Calculate the time from the point when we start our foreground service to the point when we stop our foreground service
+    // function to show the notification title and notification detail(km which use MapUtil lib for calculate)
+    // -> call when receive the location from user in locationCallback
+    private fun updateNotificationPeriodically() {
+        notification.apply {
+            setContentTitle("Distance Travelled")
+            setContentText(locationList.value?.let { MapUtil.calculateTheDistance(it) } + "km")
+        }
+        notificationManager.notify(NOTIFICATION_ID, notification.build())
+    }
 }
