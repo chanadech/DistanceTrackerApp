@@ -34,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.ButtCap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.delay
@@ -127,12 +128,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             }
         }
          TrackerService.startTime.observe(viewLifecycleOwner,{
-             startTime = it // set start time that create from mapfragment to start time that received from tracker service
+             startTime = it             // set start time that create from mapfragment to start time that received from tracker service
          })
          TrackerService.stopTime.observe(viewLifecycleOwner,{
-             stopTime = it // set stop time that create from mapfragment to stop time that received from tracker service
+             stopTime = it              // set stop time that create from mapfragment to stop time that received from tracker service
+             if(stopTime != 0L){
+              showBiggerPicture()                          // zoom-out and create camera animation to show to user, the whole path that user travelled
+
+
+             }
          })
      }
+
+
 
     private fun drawPolyLine(){
         val polyLine = map.addPolyline(
@@ -232,8 +240,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             this.action = action
             requireContext().startService(this) // this = intent
         }
+    }
+
+    private fun showBiggerPicture() {                               // trigger every time when stop-time value changes and stop-time value not a zero when we actually stop the foreground service
+        val bounds = LatLngBounds.Builder()
+        for(location in locationList){                              // want to include the each location from the list inside our latlng bounds object
+            bounds.include(location)                                //location = latlng object
+        }
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(
+            bounds.build(), 100
+        ), 2000, null)
 
     }
+
 
     override fun onMyLocationButtonClick(): Boolean {                                 // handle how myLocation button clicked
         binding.hintTextView.animate().alpha(0f).duration = 1500                // animate textview when press our location button -> alpha value -> 1 show, 0 gone
