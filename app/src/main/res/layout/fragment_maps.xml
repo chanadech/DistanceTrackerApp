@@ -77,7 +77,7 @@
             observeTracking="@{tracking.started}" />
 
         <Button
-            android:id="@+id/refresh_button"
+            android:id="@+id/reset_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

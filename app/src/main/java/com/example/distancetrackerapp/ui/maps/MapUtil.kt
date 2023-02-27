@@ -30,7 +30,7 @@ object MapUtil {
 
 
         if(locationList.size >1 ){                                                                   //check if location list is not empty  -> calculate the distance
-            val meters = SphericalUtil.computeDistanceBetween(locationList[0],locationList.last())   // given start point ([0]) and end point (last())
+            val meters = SphericalUtil.computeDistanceBetween(locationList.first(),locationList.last())   // given start point ([0] or .first()) and end point (last())
             val kilometers = meters / 1000
             return DecimalFormat("#.##").format(kilometers) // two decimal
         }

@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.distancetrackerapp.R
 import com.example.distancetrackerapp.databinding.FragmentMapsBinding
+import com.example.distancetrackerapp.model.Result
 import com.example.distancetrackerapp.service.TrackerService
 import com.example.distancetrackerapp.utils.Constants
 import com.example.distancetrackerapp.utils.ExtensionFunction.disable
@@ -80,7 +82,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             onStopButtonClick()
 
         }
-        binding.refreshButton.setOnClickListener {
+        binding.resetButton.setOnClickListener {
 
         }
 
@@ -145,7 +147,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
              stopTime = it              // set stop time that create from mapfragment to stop time that received from tracker service
              if(stopTime != 0L){
               showBiggerPicture()                          // zoom-out and create camera animation to show to user, the whole path that user travelled
-
+              displayResult()                              // navigate to result fragment with the actual result
 
              }
          })
@@ -262,6 +264,25 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(
             bounds.build(), 100
         ), 2000, null)
+
+    }
+
+    private fun displayResult(){
+        val result = Result(
+            MapUtil.calculateTheDistance(locationList),
+            MapUtil.calculateElapsedTime(startTime, stopTime)
+        )
+        lifecycleScope.launch{
+            delay(2500)
+            val directions = MapsFragmentDirections.actionMapsFragmentToResultFragment(result)         //MapsFragmentDirections generate when we add argument to the navigation graph -> use to send the argument to other class from maps fragment -> don't forget to rebuild project
+            findNavController().navigate(directions)
+            binding.startButton.apply {
+                hide()
+                enable()
+            }
+            binding.stopButton.hide()
+            binding.resetButton.show()
+        }
 
     }
 

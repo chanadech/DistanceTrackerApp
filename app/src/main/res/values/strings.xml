@@ -22,5 +22,6 @@
     <string name="distance">Distance</string>
     <string name="time">time</string>
     <string name="share">share</string>
+    <string name="result">%1$s km</string>
 
 </resources>
