@@ -19,5 +19,8 @@
     <string name="terrain">terrain</string>
     <string name="satellite">Satellite</string>
     <string name="none_map">None</string>
+    <string name="distance">Distance</string>
+    <string name="time">time</string>
+    <string name="share">share</string>
 
 </resources>

@@ -28,7 +28,7 @@
             android:id="@+id/action_mapsFragment_to_mapsFragmentWithTools"
             app:destination="@id/mapsFragmentWithTools" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/resultFragment"
         android:name="com.example.distancetrackerapp.ui.result.ResultFragment"
         android:label="fragment_result"
@@ -36,7 +36,7 @@
         <action
             android:id="@+id/action_resultFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
-    </fragment>
+    </dialog>
     <fragment
         android:id="@+id/mapsFragmentWithTools"
         android:name="com.example.distancetrackerapp.ui.MapsWithToolsFragment"
