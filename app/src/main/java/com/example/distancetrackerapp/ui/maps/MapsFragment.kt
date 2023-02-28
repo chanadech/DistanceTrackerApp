@@ -1,6 +1,7 @@
 package com.example.distancetrackerapp.ui.maps
 
 import android.annotation.SuppressLint
+import android.content.ContentProviderClient
 import android.content.Intent
 import android.graphics.Color
 import androidx.fragment.app.Fragment
@@ -28,6 +29,8 @@ import com.example.distancetrackerapp.utils.ExtensionFunction.hide
 import com.example.distancetrackerapp.utils.ExtensionFunction.show
 import com.example.distancetrackerapp.utils.Permissions
 import com.example.distancetrackerapp.utils.requestBackgroundLocationPermission
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 
 import com.google.android.gms.maps.GoogleMap
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,6 +59,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     val started = MutableLiveData(false)
 
     private var locationList = mutableListOf<LatLng>()
+    private var polyLineList = mutableListOf<Polyline>() // put each and every polyline we draw on map in this list
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
 
     // create variable for observe start and stop time from tracker service
     private var startTime = 0L
@@ -83,13 +91,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
         }
         binding.resetButton.setOnClickListener {
+            onResetButtonClick()
 
         }
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity()) // use fusedLocationProviderClient to get the use latest location -> use for animate camera
+
         binding.toolsButton.setOnClickListener{ view ->
             view.findNavController().navigate(R.id.action_mapsFragment_to_mapsFragmentWithTools)
-
-
         }
         return binding.root
     }
@@ -156,7 +165,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
 
 
-    private fun drawPolyLine(){
+    private fun drawPolyLine(){                           // call every time we get a new location in observeTrackerService
         val polyLine = map.addPolyline(
             PolylineOptions().apply {
                 width(10f)
@@ -165,11 +174,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 startCap(ButtCap())
                 endCap(ButtCap())
                 addAll(locationList)
-
-
-
             }
         )
+        polyLineList.add(polyLine)                          // every time we get a new location will also add the polyline to new list -> increase the its item size whenever we get/draw new polyline
     }
 
 
@@ -209,6 +216,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         binding.startButton.show()
 
     }
+
+    private fun onResetButtonClick() {
+       mapReset()
+    }
+
 
 
 
@@ -284,6 +296,28 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             binding.resetButton.show()
         }
 
+    }
+
+    //remove all polyline from map and animate our camera view to user latest location
+    @SuppressLint("MissingPermission")
+    private fun mapReset() {
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener{
+            val lastKnownLocation = LatLng(     //create object to get last location from fusedlocationProviderClient
+                it.result.latitude,
+                it.result.longitude
+            )
+            for(polyline in polyLineList){      //use polylineList that create for contain the location to remove the polyline
+                polyline.remove()
+            }
+            map.animateCamera(
+                CameraUpdateFactory.newCameraPosition(
+                    MapUtil.setCamaraPosition(lastKnownLocation)
+                )
+            )
+            locationList.clear()                        // clear list
+            binding.resetButton.hide()                  // hide button after reset the map
+            binding.startButton.show()
+        }
     }
 
 
