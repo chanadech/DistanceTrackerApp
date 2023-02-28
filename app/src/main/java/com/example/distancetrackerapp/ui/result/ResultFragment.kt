@@ -1,5 +1,6 @@
 package com.example.distancetrackerapp.ui.result
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,7 +28,22 @@ class ResultFragment : BottomSheetDialogFragment() {
         // implement logic to get the result which we have passed from maps fragment and fill textview with that same data
         binding.distanceValueTextView.text = getString(R.string.result, args.result.distance) // get the string and concatenate the second parameter
         binding.timeValueTextView.text = args.result.time
+
+        binding.shareButton.setOnClickListener{
+            shareResult()
+        }
+
         return binding.root
+    }
+
+    // share data to other apps
+    private fun shareResult() {
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type  = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "I want ${args.result.distance} km in ${args.result.time}!") // specify data which we want to send using putExtra
+        }
+        startActivity(shareIntent)
     }
 
     override fun onDestroyView() {
