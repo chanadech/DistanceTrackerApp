@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.ButtCap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
@@ -49,7 +51,7 @@ import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickListener,EasyPermissions.PermissionCallbacks {
+class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickListener,EasyPermissions.PermissionCallbacks, GoogleMap.OnMarkerClickListener {
 
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
@@ -60,6 +62,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
     private var locationList = mutableListOf<LatLng>()
     private var polyLineList = mutableListOf<Polyline>() // put each and every polyline we draw on map in this list
+    private var markerList = mutableListOf<Marker>()
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -116,6 +119,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         map = googleMap!!
         map.isMyLocationEnabled = true                // display button to navigate to my location
         map.setOnMyLocationButtonClickListener(this)  // ref to our onMyLocationButtonClickListener implement
+        map.setOnMarkerClickListener(this)             // ref to our onMarkerClickListener implement in this fragment
         map.uiSettings.apply {            // Don't need user to move map by their own => move by our camera view
             isZoomControlsEnabled = false
             isZoomGesturesEnabled = false
@@ -277,7 +281,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             bounds.build(), 100
         ), 2000, null)
 
+        addMarker(locationList.first())
+        addMarker(locationList.last())
+
     }
+    // function to put marker to out track
+    private fun addMarker(position: LatLng){
+        val marker = map.addMarker(MarkerOptions().position(position))
+        if (marker != null) {
+            markerList.add(marker)
+        }
+
+    }
+
 
     private fun displayResult(){
         val result = Result(
@@ -306,15 +322,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 it.result.latitude,
                 it.result.longitude
             )
-            for(polyline in polyLineList){      //use polylineList that create for contain the location to remove the polyline
-                polyline.remove()
-            }
             map.animateCamera(
                 CameraUpdateFactory.newCameraPosition(
                     MapUtil.setCamaraPosition(lastKnownLocation)
                 )
             )
+            for(polyline in polyLineList){      //use polylineList that create for contain the location to remove the polyline
+                polyline.remove()
+            }
+            for (marker in markerList){                 //  remove all marker from marker list
+                marker.remove()
+            }
             locationList.clear()                        // clear list
+            markerList.clear()
+
             binding.resetButton.hide()                  // hide button after reset the map
             binding.startButton.show()
         }
@@ -355,5 +376,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
     override fun onDestroyView() {  // help to handle memory leak
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+        return true  // return true because don't want user to move/use camera animation to the marker when user press on marker (else will move camera to marker position and zoom in to that marker)
     }
 }
