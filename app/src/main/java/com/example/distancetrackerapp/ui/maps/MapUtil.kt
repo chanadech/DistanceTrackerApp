@@ -27,9 +27,7 @@ object MapUtil {
 
     // function to calculate the distance that we have traveled from our location list (which will be updated every time we update our location list)
     fun calculateTheDistance(locationList: MutableList<LatLng>):String{
-
-
-        if(locationList.size >1 ){                                                                   //check if location list is not empty  -> calculate the distance
+        if(locationList.size >1 ){                                                         //check if location list is not empty  -> calculate the distance
             val meters = SphericalUtil.computeDistanceBetween(locationList.first(),locationList.last())   // given start point ([0] or .first()) and end point (last())
             val kilometers = meters / 1000
             return DecimalFormat("#.##").format(kilometers) // two decimal

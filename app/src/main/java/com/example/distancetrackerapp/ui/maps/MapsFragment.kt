@@ -161,13 +161,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
              if(stopTime != 0L){
               showBiggerPicture()                          // zoom-out and create camera animation to show to user, the whole path that user travelled
               displayResult()                              // navigate to result fragment with the actual result
-
              }
          })
-
      }
-
-
 
     private fun drawPolyLine(){                           // call every time we get a new location in observeTrackerService
         val polyLine = map.addPolyline(
@@ -182,7 +178,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
         )
         polyLineList.add(polyLine)                          // every time we get a new location will also add the polyline to new list -> increase the its item size whenever we get/draw new polyline
     }
-
 
     // function to set Camera position every time we receive a new location update -> camera will follow the user location
     // camera position -> we will choose our last item inside the locationList
@@ -199,7 +194,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                 null)
         }
     }
-
 
     private fun onStartButtonClick() {
         if(Permissions.hasBackgroundLocationPermissions(requireContext(),)){                // Check the background location permissions when user tab start button if true -> Log
@@ -225,12 +219,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
        mapReset()
     }
 
-
-
-
     private fun startCountDown() {
         binding.timerTextView.show()
-        binding.stopButton.disable()                                                                   // we dont want user to cancel anything when count down timer is start, when the count down timer is timer is finished and we recerive a final location from our service -> enable stop button
+        binding.stopButton.disable()                                                                   // we dont want user to cancel anything when count down timer is start, when the count down timer is finished and we receive a final location from our service -> enable stop button
         val timer: CountDownTimer = object : CountDownTimer(4000, 1000) {   // start time (4),(1) =>  3 ,2 ,1, 0
             override fun onTick(millisUntilFinished: Long) {                                           // trigger in every second
                 val currentSecond = millisUntilFinished / 1000                                         // (millisUntilFinished / one second) = currentSecond on every tick in our countdown timer ; current second = 3 -> 2 -> 1 -> 0
@@ -294,7 +285,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
 
     }
 
-
     private fun displayResult(){
         val result = Result(
             MapUtil.calculateTheDistance(locationList),
@@ -327,7 +317,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
                     MapUtil.setCamaraPosition(lastKnownLocation)
                 )
             )
-            for(polyline in polyLineList){      //use polylineList that create for contain the location to remove the polyline
+            for(polyline in polyLineList){              //use polylineList that create for contain the location to remove the polyline
                 polyline.remove()
             }
             for (marker in markerList){                 //  remove all marker from marker list
@@ -340,7 +330,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             binding.startButton.show()
         }
     }
-
 
     override fun onMyLocationButtonClick(): Boolean {                                 // handle how myLocation button clicked
         binding.hintTextView.animate().alpha(0f).duration = 1500                // animate textview when press our location button -> alpha value -> 1 show, 0 gone
@@ -369,6 +358,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, OnMyLocationButtonClickList
             requestBackgroundLocationPermission(this)
         }
     }
+
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         onStartButtonClick()
     }
