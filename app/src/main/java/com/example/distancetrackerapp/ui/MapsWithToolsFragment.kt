@@ -161,12 +161,27 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
         updateCenterMarker()
     }
 
-    private fun updateCenterMarker() {
+ /*   private fun updateCenterMarker() {
         centerMarker?.remove()
         val center = calculatePolygonCenter(markerPositions)
         centerMarker = map.addMarker(
             MarkerOptions().position(center).title("Center")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+        )
+        centerMarker?.isDraggable = true
+    }*/
+
+    private fun updateCenterMarker() {
+        centerMarker?.remove()
+        val center = calculatePolygonCenter(markerPositions)
+        val hue = if (markerObjects.size >= 2) {
+            BitmapDescriptorFactory.HUE_ORANGE
+        } else {
+            BitmapDescriptorFactory.HUE_RED
+        }
+        centerMarker = map.addMarker(
+            MarkerOptions().position(center).title("Center")
+                .icon(BitmapDescriptorFactory.defaultMarker(hue))
         )
         centerMarker?.isDraggable = true
     }
