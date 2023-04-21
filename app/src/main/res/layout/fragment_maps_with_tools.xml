@@ -306,6 +306,39 @@
                     tools:text="XX.YY.ZZ" />
 
 
+                <TextView
+                    android:id="@+id/device_time_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"
+                    android:textColor="@android:color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage"
+                    android:text="XX.YY"
+                    tools:text="XX.YY.ZZ" />
+
+
+                <TextView
+                    android:id="@+id/gnss_time_adapt_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"
+                    android:textColor="@android:color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage"
+                    android:text="XX.YY"
+                    tools:text="XX.YY.ZZ" />
+
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

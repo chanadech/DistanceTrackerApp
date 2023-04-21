@@ -33,6 +33,8 @@ import com.google.android.material.navigationrail.NavigationRailView
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
+
 class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap                              // 1. initial map variable ก่อน เพื้่อเอาไปใช้ใน  onMapReady function
@@ -52,15 +54,28 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
             // ดึงเวลา GNSS จาก location.time
             val gnssTime = location.time
 
+            // ใช้เวลาปัจจุบันของอุปกรณ์
+            val currentTime = System.currentTimeMillis()
+
             // แปลงเวลา GNSS เป็นรูปแบบ "hh:mm:ss"
             val sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
             val formattedGnssTime = sdf.format(Date(gnssTime))
 
 
+            // แปลงเวลาปัจจุบันของอุปกรณ์เป็นรูปแบบ "hh:mm:ss"
+            val formattedDeviceTime = sdf.format(Date(currentTime))
+
             println("GNSS Time: $gnssTime")
+            println("Current Time: $currentTime")
 
             // แสดงเวลา GNSS ใน TextView
             binding.gnssTimeTextView.text = "GNSS Time: $formattedGnssTime"
+            binding.deviceTimeTextView.text = "Device Time: $formattedDeviceTime"
+
+            updateGnssTimeTextView(gnssTime)
+
+
+
         }
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
@@ -79,7 +94,6 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
@@ -248,6 +262,13 @@ class MapsWithToolsFragment : Fragment(), OnMapReadyCallback {
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.removeUpdates(locationListener)
         }
+    }
+    private fun updateGnssTimeTextView(gnssTime: Long) {
+        val sdf = SimpleDateFormat("HH:mm:ss", Locale.US)
+//        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        val formattedGnssTime = sdf.format(Date(gnssTime))
+
+        binding.gnssTimeAdaptTextView.text = "GNSS Time with format us: $formattedGnssTime"
     }
     companion object {
         private const val PERMISSION_REQUEST_CODE = 1
